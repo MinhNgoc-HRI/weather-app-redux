@@ -2,7 +2,8 @@
 import React, {useEffect, useState, useCallback, useMemo} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import _ from 'lodash'
-import {fetchOneCall} from '../store/onecall-slice';
+// import {fetchOneCall} from '../store/onecall-slice';
+import * as ACTION from '../action/index'
 import Loading from "../ui/Loading";
 import Today from "./Today";
 import Week from "./Week";
@@ -14,14 +15,14 @@ import hans from '../icon/hans.jpeg';
 
 
 const DetailWeather = props => {
-    const onecall = useSelector(state => state.onecall,_.isEqual);
-    const weather = useSelector(state => state.weather,_.isEqual);
+    const onecall = useSelector(state => state.onecallReducer,_.isEqual);
+    const weather = useSelector(state => state.weatherReducer,_.isEqual);
     const dispatch = useDispatch();
     const [li, setLi] = useState(0);
     useEffect(() => {
         if (Object.keys(weather).length !== 0) {
             let {lat, lon} = weather.coord;
-            dispatch(fetchOneCall({lat, lon}));
+            dispatch(ACTION.actionOneCall({lat,lon}));
         }
     }, [dispatch, weather])
     const clickHandler = useCallback((e) => {

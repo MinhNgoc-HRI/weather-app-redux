@@ -1,17 +1,18 @@
 import {Fragment, useCallback, useEffect, useMemo, useRef} from "react";
 import {useDispatch,useSelector,shallowEqual} from 'react-redux';
-import {fetchWeather} from '../store/weather-slice'
+// import {fetchWeather} from '../store/weather-slice'
+import * as ACTION from '../action/index'
 import Loading from "../ui/Loading";
 import rainimg from "../icon/rain.jpg";
 import classes from "./SearchWeather.module.css";
 let init = true;
 const SearchWeather = props => {
-    const weather = useSelector(state=>state.weather,shallowEqual);
+    const weather = useSelector(state=>state.weatherReducer,shallowEqual);
     const dispatch = useDispatch();
     const searchInputRef = useRef();
     useEffect(()=>{
     if(init){
-        dispatch(fetchWeather('nam dinh'));
+        dispatch(ACTION.actionWeather('nam dinh'));
         init = false
     }
     },[dispatch])
@@ -22,7 +23,7 @@ const SearchWeather = props => {
         if (value.trim().length === 0) {
             return;
         }
-        dispatch(fetchWeather(value));
+        dispatch(ACTION.actionWeather(value));
         searchInputRef.current.value = '';
     },[dispatch])
     const day = useMemo(()=>new Date(Date.now())
@@ -75,7 +76,8 @@ const SearchWeather = props => {
                 </Fragment>
             )
         )
-    },[day,submitHandler,weather.clouds?.all,weather.main?.temp,weather.name,weather.weather])
+    },[day,submitHandler,weather.clouds?.all,weather.main?.temp,weather.name,weather.weather]
+    )
 }
 
 export  default SearchWeather
